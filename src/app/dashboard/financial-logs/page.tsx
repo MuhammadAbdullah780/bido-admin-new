@@ -459,7 +459,7 @@ const page = (props: Props) => {
     <div className="space-y-10">
       <h1 className="text-3xl font-medium">Financial Logs</h1>
       
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         {financialLogStats.map((stat) => (
           <MetricCard
             className="col-span-1"

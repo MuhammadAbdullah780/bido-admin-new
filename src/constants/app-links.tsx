@@ -101,7 +101,7 @@ export const APP_LINKS = [
     icon: DollarSign,
     to: "/dashboard/payment-logs",
     isMatched: (path: string): boolean => {
-      return path.startsWith("/dashboard/payment-logs") || path.startsWith("/dashboard/commissions");
+      return path.startsWith("/dashboard/payment-logs") || path.startsWith("/dashboard/commissions") || path.startsWith("/dashboard/auction-payments");
     },
     innerRoutes: [
       {
@@ -116,6 +116,20 @@ export const APP_LINKS = [
         to: "/dashboard/commissions",
         isMatched: (path: string): boolean => {
           return path === "/dashboard/commissions";
+        },
+      },
+      {
+        title: "Auction Payments",
+        to: "/dashboard/auction-payments",
+        isMatched: (path: string): boolean => {
+          return path === "/dashboard/auction-payments";
+        },
+      },
+      {
+        title: "Payment Dashboard",
+        to: "/dashboard/auction-payment-dashboard",
+        isMatched: (path: string): boolean => {
+          return path === "/dashboard/auction-payment-dashboard";
         },
       },
     ],

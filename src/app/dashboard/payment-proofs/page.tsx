@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Download, Eye, FileText, Image, X, Check, Clock, AlertCircle } from "lucide-react";
+import { ChevronDown, ChevronUp, Download, Eye, FileText, Image, X, Check, Clock, AlertCircle, Receipt, Plus } from "lucide-react";
 
 type Props = {};
 
@@ -286,6 +286,12 @@ const Page = (props: Props) => {
   const [rejectionReason, setRejectionReason] = useState("");
   const [pendingRejectProof, setPendingRejectProof] = useState<(typeof paymentProofs)[number] | null>(null);
   const [expandedHistory, setExpandedHistory] = useState<number | null>(null);
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+  const [invoiceData, setInvoiceData] = useState({
+    invoiceNumber: "",
+    dueDate: "",
+    notes: ""
+  });
 
   // Filter data based on active tab
   const filteredData = proofData.filter((proof) => {
@@ -331,6 +337,55 @@ const Page = (props: Props) => {
       )
     );
     setIsViewerOpen(false);
+  };
+
+  const handleGenerateInvoice = (proof: (typeof paymentProofs)[number]) => {
+    setSelectedProof(proof);
+    setInvoiceData({
+      invoiceNumber: `INV-${Date.now()}`,
+      dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      notes: `Invoice for payment proof ${proof.auctionId}`
+    });
+    setIsInvoiceModalOpen(true);
+  };
+
+  const handleCreateInvoice = () => {
+    if (!invoiceData.invoiceNumber || !invoiceData.dueDate) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    // Simulate invoice creation
+    console.log("Creating invoice:", {
+      proof: selectedProof,
+      invoice: invoiceData
+    });
+
+    // Update proof with invoice information
+    if (selectedProof) {
+      setProofData((prev) =>
+        prev.map((proof) =>
+          proof.id === selectedProof.id
+            ? {
+                ...proof,
+                history: [
+                  ...proof.history,
+                  {
+                    action: "Invoice Generated",
+                    timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
+                    user: "Current Admin",
+                    details: `Invoice ${invoiceData.invoiceNumber} created`,
+                  },
+                ],
+              }
+            : proof
+        )
+      );
+    }
+
+    setIsInvoiceModalOpen(false);
+    setInvoiceData({ invoiceNumber: "", dueDate: "", notes: "" });
+    alert("Invoice created successfully!");
   };
 
   const handleRejectProof = (proof: (typeof paymentProofs)[number]) => {
@@ -409,7 +464,7 @@ const Page = (props: Props) => {
     <div className="space-y-10">
       <h1 className="text-3xl font-medium">Payment Proofs</h1>
 
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         {paymentProofStats.map((stat) => (
           <MetricCard
             className="col-span-1"
@@ -421,7 +476,7 @@ const Page = (props: Props) => {
       </div>
 
       {/* Status Filter Tabs */}
-      <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+      <div className="flex flex-wrap gap-1 bg-gray-100 p-1 rounded-lg w-full sm:w-fit">
         {[
           { key: "all", label: "All", count: proofData.length },
           {
@@ -443,14 +498,15 @@ const Page = (props: Props) => {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key as "all" | "pending" | "approved" | "rejected")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors ${
               activeTab === tab.key
                 ? "bg-white text-gray-900 shadow-sm"
                 : "text-gray-600 hover:text-gray-900"
             }`}
             type="button"
           >
-            {tab.label} ({tab.count})
+            <span className="hidden sm:inline">{tab.label} ({tab.count})</span>
+            <span className="sm:hidden">{tab.label}</span>
           </button>
         ))}
       </div>
@@ -459,15 +515,15 @@ const Page = (props: Props) => {
 
       {/* Document Viewer Modal */}
       <Dialog open={isViewerOpen} onOpenChange={setIsViewerOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden w-[95vw] sm:w-full">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
+            <DialogTitle className="flex items-center gap-2 text-sm sm:text-base">
               {selectedProof && getDocumentIcon(selectedProof.documentType)}
-              Payment Proof Review - {selectedProof?.auctionId}
+              <span className="truncate">Payment Proof Review - {selectedProof?.auctionId}</span>
             </DialogTitle>
           </DialogHeader>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-h-[70vh] overflow-y-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 max-h-[70vh] overflow-y-auto">
             {/* Document Viewer */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Document Viewer</h3>
@@ -495,10 +551,10 @@ const Page = (props: Props) => {
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Payment Details</h3>
               <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
                   <div>
                     <span className="font-medium text-gray-600">Auction ID:</span>
-                    <p className="font-mono">{selectedProof?.auctionId}</p>
+                    <p className="font-mono text-xs sm:text-sm">{selectedProof?.auctionId}</p>
                   </div>
                   <div>
                     <span className="font-medium text-gray-600">Status:</span>
@@ -519,15 +575,15 @@ const Page = (props: Props) => {
                   </div>
                   <div>
                     <span className="font-medium text-gray-600">User:</span>
-                    <p>{selectedProof?.userName}</p>
+                    <p className="text-xs sm:text-sm">{selectedProof?.userName}</p>
                   </div>
                   <div>
                     <span className="font-medium text-gray-600">Email:</span>
-                    <p className="text-xs">{selectedProof?.userEmail}</p>
+                    <p className="text-xs break-all">{selectedProof?.userEmail}</p>
                   </div>
                   <div>
                     <span className="font-medium text-gray-600">Amount:</span>
-                    <p className="font-semibold text-green-600">
+                    <p className="font-semibold text-green-600 text-sm sm:text-base">
                       {selectedProof
                         ? `$${selectedProof.paymentAmount.toFixed(2)} ${selectedProof.currency}`
                         : ""}
@@ -535,15 +591,15 @@ const Page = (props: Props) => {
                   </div>
                   <div>
                     <span className="font-medium text-gray-600">Document Type:</span>
-                    <p>{selectedProof?.documentType}</p>
+                    <p className="text-xs sm:text-sm">{selectedProof?.documentType}</p>
                   </div>
                   <div>
                     <span className="font-medium text-gray-600">Submitted:</span>
-                    <p>{selectedProof?.submissionDate}</p>
+                    <p className="text-xs sm:text-sm">{selectedProof?.submissionDate}</p>
                   </div>
                   <div>
                     <span className="font-medium text-gray-600">Reviewed By:</span>
-                    <p>{selectedProof?.reviewedBy || "Not reviewed"}</p>
+                    <p className="text-xs sm:text-sm">{selectedProof?.reviewedBy || "Not reviewed"}</p>
                   </div>
                 </div>
 
@@ -594,34 +650,50 @@ const Page = (props: Props) => {
             </div>
           </div>
 
-          <DialogFooter className="flex gap-2">
-            <Button variant="outline" onClick={() => setIsViewerOpen(false)}>
-              Close
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => selectedProof && handleDownloadDocument(selectedProof)}
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Download
-            </Button>
-            {selectedProof?.status === "Pending" && (
-              <>
+          <DialogFooter className="flex flex-col sm:flex-row gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <Button variant="outline" onClick={() => setIsViewerOpen(false)} className="w-full sm:w-auto">
+                Close
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => selectedProof && handleDownloadDocument(selectedProof)}
+                className="w-full sm:w-auto"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Download
+              </Button>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              {selectedProof?.status === "Pending" && (
+                <>
+                  <Button
+                    variant="destructive"
+                    onClick={() => selectedProof && handleRejectProof(selectedProof)}
+                    className="w-full sm:w-auto"
+                  >
+                    <X className="w-4 h-4 mr-2" />
+                    Reject
+                  </Button>
+                  <Button
+                    onClick={() => selectedProof && handleApproveProof(selectedProof.id)}
+                    className="w-full sm:w-auto"
+                  >
+                    <Check className="w-4 h-4 mr-2" />
+                    Approve
+                  </Button>
+                </>
+              )}
+              {selectedProof?.status === "Approved" && (
                 <Button
-                  variant="destructive"
-                  onClick={() => selectedProof && handleRejectProof(selectedProof)}
+                  onClick={() => selectedProof && handleGenerateInvoice(selectedProof)}
+                  className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
                 >
-                  <X className="w-4 h-4 mr-2" />
-                  Reject
+                  <Receipt className="w-4 h-4 mr-2" />
+                  Generate Invoice
                 </Button>
-                <Button
-                  onClick={() => selectedProof && handleApproveProof(selectedProof.id)}
-                >
-                  <Check className="w-4 h-4 mr-2" />
-                  Approve
-                </Button>
-              </>
-            )}
+              )}
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -664,6 +736,102 @@ const Page = (props: Props) => {
               disabled={!rejectionReason.trim()}
             >
               Reject Payment Proof
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Invoice Generation Modal */}
+      <Dialog open={isInvoiceModalOpen} onOpenChange={setIsInvoiceModalOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Receipt className="w-5 h-5" />
+              Generate Invoice
+            </DialogTitle>
+            <DialogDescription>
+              Create an invoice for the approved payment proof.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-3">
+              <label htmlFor="invoice-number" className="text-sm font-medium">
+                Invoice Number *
+              </label>
+              <input
+                id="invoice-number"
+                type="text"
+                placeholder="Enter invoice number..."
+                value={invoiceData.invoiceNumber}
+                onChange={(e) => setInvoiceData(prev => ({ ...prev, invoiceNumber: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="space-y-3">
+              <label htmlFor="due-date" className="text-sm font-medium">
+                Due Date *
+              </label>
+              <input
+                id="due-date"
+                type="date"
+                value={invoiceData.dueDate}
+                onChange={(e) => setInvoiceData(prev => ({ ...prev, dueDate: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="space-y-3">
+              <label htmlFor="invoice-notes" className="text-sm font-medium">
+                Notes
+              </label>
+              <Textarea
+                id="invoice-notes"
+                placeholder="Enter additional notes for the invoice..."
+                value={invoiceData.notes}
+                onChange={(e) => setInvoiceData(prev => ({ ...prev, notes: e.target.value }))}
+                className="min-h-[100px]"
+              />
+            </div>
+            {selectedProof && (
+              <div className="bg-gray-50 p-4 rounded-md">
+                <h4 className="font-medium text-sm mb-2">Payment Details</h4>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span className="text-gray-600">Auction ID:</span>
+                    <p className="font-mono">{selectedProof.auctionId}</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Amount:</span>
+                    <p className="font-semibold text-green-600">
+                      ${selectedProof.paymentAmount.toFixed(2)} {selectedProof.currency}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">User:</span>
+                    <p>{selectedProof.userName}</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Email:</span>
+                    <p className="text-xs">{selectedProof.userEmail}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsInvoiceModalOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={handleCreateInvoice}
+              disabled={!invoiceData.invoiceNumber || !invoiceData.dueDate}
+            >
+              <Receipt className="w-4 h-4 mr-2" />
+              Create Invoice
             </Button>
           </DialogFooter>
         </DialogContent>

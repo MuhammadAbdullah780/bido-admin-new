@@ -264,7 +264,7 @@ export default function PaymentLogsPage() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white rounded-lg shadow-sm border p-4">
           <div className="flex items-center">
             <DollarSign className="h-8 w-8 text-green-500 mr-3" />
@@ -313,7 +313,7 @@ export default function PaymentLogsPage() {
 
       {/* Filters */}
       <AdminCard>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
           <div className="lg:col-span-2">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
