@@ -10,6 +10,9 @@ import { APP_LINKS } from "@/constants/app-links";
 // Utils
 import { cn } from "@/lib/utils";
 
+// Context
+import { useSidebar } from "@/contexts/sidebar-context";
+
 //
 type Props = {
   config: (typeof APP_LINKS)[number];
@@ -23,6 +26,7 @@ const SideLink = ({ config }: Props) => {
   // Hooks
   const pathname = usePathname();
   const router = useRouter();
+  const { closeMobileSidebar } = useSidebar();
 
   // Vars
   const hasChildren = config?.innerRoutes && config?.innerRoutes?.length > 0;
@@ -42,6 +46,7 @@ const SideLink = ({ config }: Props) => {
           }
 
           router.push(config.to);
+          closeMobileSidebar();
         }}
         className={cn(
           "group flex items-center rounded-lg px-3 py-2 text-sm font-medium",
@@ -84,6 +89,7 @@ const SideLink = ({ config }: Props) => {
                 key={child.to}
                 onClick={() => {
                   router?.push(child.to);
+                  closeMobileSidebar();
                 }}
                 className={cn(
                   "flex items-center rounded-lg py-2 pl-10 pr-3 text-sm font-medium transition-colors",
