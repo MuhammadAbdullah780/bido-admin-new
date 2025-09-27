@@ -34,7 +34,7 @@ const paymentProofs = [
     userName: "John Doe",
     userEmail: "john.doe@example.com",
     submissionDate: "2024-01-15 14:30:25",
-    paymentAmount: 1250.00,
+    paymentAmount: 1250.0,
     currency: "USD",
     documentType: "Bank Transfer Receipt",
     documentUrl: "/documents/payment-proof-1.pdf",
@@ -49,9 +49,9 @@ const paymentProofs = [
         action: "Submitted",
         timestamp: "2024-01-15 14:30:25",
         user: "John Doe",
-        details: "Payment proof document uploaded"
-      }
-    ]
+        details: "Payment proof document uploaded",
+      },
+    ],
   },
   {
     id: 2,
@@ -60,7 +60,7 @@ const paymentProofs = [
     userName: "Jane Smith",
     userEmail: "jane.smith@example.com",
     submissionDate: "2024-01-15 12:15:10",
-    paymentAmount: 850.00,
+    paymentAmount: 850.0,
     currency: "USD",
     documentType: "Credit Card Statement",
     documentUrl: "/documents/payment-proof-2.jpg",
@@ -75,15 +75,15 @@ const paymentProofs = [
         action: "Submitted",
         timestamp: "2024-01-15 12:15:10",
         user: "Jane Smith",
-        details: "Payment proof document uploaded"
+        details: "Payment proof document uploaded",
       },
       {
         action: "Approved",
         timestamp: "2024-01-15 13:45:30",
         user: "Admin User",
-        details: "Payment proof verified and approved"
-      }
-    ]
+        details: "Payment proof verified and approved",
+      },
+    ],
   },
   {
     id: 3,
@@ -92,7 +92,7 @@ const paymentProofs = [
     userName: "Mike Johnson",
     userEmail: "mike.johnson@example.com",
     submissionDate: "2024-01-15 10:20:45",
-    paymentAmount: 2100.00,
+    paymentAmount: 2100.0,
     currency: "USD",
     documentType: "Bank Transfer Receipt",
     documentUrl: "/documents/payment-proof-3.pdf",
@@ -107,15 +107,15 @@ const paymentProofs = [
         action: "Submitted",
         timestamp: "2024-01-15 10:20:45",
         user: "Mike Johnson",
-        details: "Payment proof document uploaded"
+        details: "Payment proof document uploaded",
       },
       {
         action: "Rejected",
         timestamp: "2024-01-15 11:30:15",
         user: "Admin User",
-        details: "Document is unclear and payment amount does not match"
-      }
-    ]
+        details: "Document is unclear and payment amount does not match",
+      },
+    ],
   },
   {
     id: 4,
@@ -124,7 +124,7 @@ const paymentProofs = [
     userName: "Sarah Wilson",
     userEmail: "sarah.wilson@example.com",
     submissionDate: "2024-01-15 09:15:30",
-    paymentAmount: 675.50,
+    paymentAmount: 675.5,
     currency: "USD",
     documentType: "PayPal Receipt",
     documentUrl: "/documents/payment-proof-4.png",
@@ -139,9 +139,9 @@ const paymentProofs = [
         action: "Submitted",
         timestamp: "2024-01-15 09:15:30",
         user: "Sarah Wilson",
-        details: "Payment proof document uploaded"
-      }
-    ]
+        details: "Payment proof document uploaded",
+      },
+    ],
   },
   {
     id: 5,
@@ -150,7 +150,7 @@ const paymentProofs = [
     userName: "David Brown",
     userEmail: "david.brown@example.com",
     submissionDate: "2024-01-14 16:45:20",
-    paymentAmount: 3200.00,
+    paymentAmount: 3200.0,
     currency: "USD",
     documentType: "Bank Transfer Receipt",
     documentUrl: "/documents/payment-proof-5.pdf",
@@ -165,15 +165,15 @@ const paymentProofs = [
         action: "Submitted",
         timestamp: "2024-01-14 16:45:20",
         user: "David Brown",
-        details: "Payment proof document uploaded"
+        details: "Payment proof document uploaded",
       },
       {
         action: "Approved",
         timestamp: "2024-01-14 17:20:10",
         user: "Admin User",
-        details: "Payment proof verified and approved"
-      }
-    ]
+        details: "Payment proof verified and approved",
+      },
+    ],
   },
   {
     id: 6,
@@ -197,54 +197,56 @@ const paymentProofs = [
         action: "Submitted",
         timestamp: "2024-01-14 14:30:15",
         user: "Emily Davis",
-        details: "Payment proof document uploaded"
+        details: "Payment proof document uploaded",
       },
       {
         action: "Rejected",
         timestamp: "2024-01-14 15:10:45",
         user: "Admin User",
-        details: "Incomplete document - missing transaction details"
-      }
-    ]
-  }
+        details: "Incomplete document - missing transaction details",
+      },
+    ],
+  },
 ];
 
 // Define columns for the JsonTable
-const proofColumns: JsonTableColumns<(typeof paymentProofs)[0]> = [
+const proofColumns: JsonTableColumns<(typeof paymentProofs)[number]> = [
   { title: "Auction ID", dataIndex: "auctionId", width: 120 },
   { title: "User", dataIndex: "userName", width: 150 },
   { title: "Email", dataIndex: "userEmail", width: 200 },
-  { 
-    title: "Status", 
+  {
+    title: "Status",
     dataIndex: "status",
     width: 120,
     render: (proof) => (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-        proof.status === "Approved" 
-          ? "bg-green-100 text-green-800" 
-          : proof.status === "Rejected"
-          ? "bg-red-100 text-red-800"
-          : "bg-yellow-100 text-yellow-800"
-      }`}>
+      <span
+        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+          proof.status === "Approved"
+            ? "bg-green-100 text-green-800"
+            : proof.status === "Rejected"
+            ? "bg-red-100 text-red-800"
+            : "bg-yellow-100 text-yellow-800"
+        }`}
+      >
         {proof.status}
       </span>
-    )
+    ),
   },
-  { 
-    title: "Amount", 
+  {
+    title: "Amount",
     dataIndex: "paymentAmount",
     width: 120,
     render: (proof) => (
       <span className="font-medium text-green-600">
         ${proof.paymentAmount.toFixed(2)} {proof.currency}
       </span>
-    )
+    ),
   },
   { title: "Document Type", dataIndex: "documentType", width: 150 },
   { title: "Submitted", dataIndex: "submissionDate", width: 150 },
   { title: "Reviewed By", dataIndex: "reviewedBy", width: 120 },
-  { 
-    title: "Actions", 
+  {
+    title: "Actions",
     dataIndex: "id",
     width: 200,
     render: (proof) => (
@@ -266,35 +268,39 @@ const proofColumns: JsonTableColumns<(typeof paymentProofs)[0]> = [
           Download
         </Button>
       </div>
-    )
+    ),
   },
 ];
 
-const page = (props: Props) => {
-  const [proofData, setProofData] = useState(paymentProofs);
-  const [selectedProofs, setSelectedProofs] = useState<string[]>([]);
+// These handlers must be defined before use in proofColumns
+let handleViewDocument: (proof: (typeof paymentProofs)[number]) => void;
+let handleDownloadDocument: (proof: (typeof paymentProofs)[number]) => void;
+
+const Page = (props: Props) => {
+  const [proofData, setProofData] = useState<typeof paymentProofs>(paymentProofs);
+  // const [selectedProofs, setSelectedProofs] = useState<string[]>([]); // unused
   const [activeTab, setActiveTab] = useState<"all" | "pending" | "approved" | "rejected">("all");
-  const [selectedProof, setSelectedProof] = useState<(typeof paymentProofs)[0] | null>(null);
+  const [selectedProof, setSelectedProof] = useState<(typeof paymentProofs)[number] | null>(null);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
-  const [pendingRejectProof, setPendingRejectProof] = useState<(typeof paymentProofs)[0] | null>(null);
+  const [pendingRejectProof, setPendingRejectProof] = useState<(typeof paymentProofs)[number] | null>(null);
   const [expandedHistory, setExpandedHistory] = useState<number | null>(null);
 
   // Filter data based on active tab
-  const filteredData = proofData.filter(proof => {
+  const filteredData = proofData.filter((proof) => {
     if (activeTab === "all") return true;
     return proof.status.toLowerCase() === activeTab;
   });
 
-  const handleViewDocument = (proof: (typeof paymentProofs)[0]) => {
+  handleViewDocument = (proof: (typeof paymentProofs)[number]) => {
     setSelectedProof(proof);
     setIsViewerOpen(true);
   };
 
-  const handleDownloadDocument = (proof: (typeof paymentProofs)[0]) => {
+  handleDownloadDocument = (proof: (typeof paymentProofs)[number]) => {
     // Simulate download
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = proof.documentUrl;
     link.download = proof.documentName;
     document.body.appendChild(link);
@@ -303,23 +309,23 @@ const page = (props: Props) => {
   };
 
   const handleApproveProof = (proofId: number) => {
-    setProofData(prev => 
-      prev.map(proof => 
-        proof.id === proofId 
-          ? { 
-              ...proof, 
+    setProofData((prev) =>
+      prev.map((proof) =>
+        proof.id === proofId
+          ? {
+              ...proof,
               status: "Approved",
-              reviewedAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+              reviewedAt: new Date().toISOString().slice(0, 19).replace("T", " "),
               reviewedBy: "Current Admin",
               history: [
                 ...proof.history,
                 {
                   action: "Approved",
-                  timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                  timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
                   user: "Current Admin",
-                  details: "Payment proof verified and approved"
-                }
-              ]
+                  details: "Payment proof verified and approved",
+                },
+              ],
             }
           : proof
       )
@@ -327,7 +333,7 @@ const page = (props: Props) => {
     setIsViewerOpen(false);
   };
 
-  const handleRejectProof = (proof: (typeof paymentProofs)[0]) => {
+  const handleRejectProof = (proof: (typeof paymentProofs)[number]) => {
     setPendingRejectProof(proof);
     setIsRejectModalOpen(true);
   };
@@ -339,30 +345,30 @@ const page = (props: Props) => {
     }
 
     if (pendingRejectProof) {
-      setProofData(prev => 
-        prev.map(proof => 
-          proof.id === pendingRejectProof.id 
-            ? { 
-                ...proof, 
+      setProofData((prev) =>
+        prev.map((proof) =>
+          proof.id === pendingRejectProof.id
+            ? {
+                ...proof,
                 status: "Rejected",
-                reviewedAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                reviewedAt: new Date().toISOString().slice(0, 19).replace("T", " "),
                 reviewedBy: "Current Admin",
                 rejectionReason: rejectionReason,
                 history: [
                   ...proof.history,
                   {
                     action: "Rejected",
-                    timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                    timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
                     user: "Current Admin",
-                    details: rejectionReason
-                  }
-                ]
+                    details: rejectionReason,
+                  },
+                ],
               }
             : proof
         )
       );
     }
-    
+
     setRejectionReason("");
     setPendingRejectProof(null);
     setIsRejectModalOpen(false);
@@ -376,8 +382,13 @@ const page = (props: Props) => {
   };
 
   const getDocumentIcon = (documentType: string) => {
-    if (documentType.includes("PDF")) return <FileText className="w-5 h-5 text-red-500" />;
-    if (documentType.includes("Statement") || documentType.includes("Receipt")) return <Image className="w-5 h-5 text-blue-500" />;
+    if (documentType.toLowerCase().includes("pdf"))
+      return <FileText className="w-5 h-5 text-red-500" />;
+    if (
+      documentType.toLowerCase().includes("statement") ||
+      documentType.toLowerCase().includes("receipt")
+    )
+      return <Image className="w-5 h-5 text-blue-500" />;
     return <FileText className="w-5 h-5 text-gray-500" />;
   };
 
@@ -397,7 +408,7 @@ const page = (props: Props) => {
   return (
     <div className="space-y-10">
       <h1 className="text-3xl font-medium">Payment Proofs</h1>
-      
+
       <div className="grid grid-cols-2 gap-5">
         {paymentProofStats.map((stat) => (
           <MetricCard
@@ -413,29 +424,38 @@ const page = (props: Props) => {
       <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
         {[
           { key: "all", label: "All", count: proofData.length },
-          { key: "pending", label: "Pending", count: proofData.filter(p => p.status === "Pending").length },
-          { key: "approved", label: "Approved", count: proofData.filter(p => p.status === "Approved").length },
-          { key: "rejected", label: "Rejected", count: proofData.filter(p => p.status === "Rejected").length },
+          {
+            key: "pending",
+            label: "Pending",
+            count: proofData.filter((p) => p.status === "Pending").length,
+          },
+          {
+            key: "approved",
+            label: "Approved",
+            count: proofData.filter((p) => p.status === "Approved").length,
+          },
+          {
+            key: "rejected",
+            label: "Rejected",
+            count: proofData.filter((p) => p.status === "Rejected").length,
+          },
         ].map((tab) => (
           <button
             key={tab.key}
-            onClick={() => setActiveTab(tab.key as any)}
+            onClick={() => setActiveTab(tab.key as "all" | "pending" | "approved" | "rejected")}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               activeTab === tab.key
                 ? "bg-white text-gray-900 shadow-sm"
                 : "text-gray-600 hover:text-gray-900"
             }`}
+            type="button"
           >
             {tab.label} ({tab.count})
           </button>
         ))}
       </div>
 
-      <JsonTable 
-        columns={proofColumns} 
-        data={filteredData} 
-        enableSelection={false}
-      />
+      <JsonTable columns={proofColumns} data={filteredData} enableSelection={false} />
 
       {/* Document Viewer Modal */}
       <Dialog open={isViewerOpen} onOpenChange={setIsViewerOpen}>
@@ -446,7 +466,7 @@ const page = (props: Props) => {
               Payment Proof Review - {selectedProof?.auctionId}
             </DialogTitle>
           </DialogHeader>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-h-[70vh] overflow-y-auto">
             {/* Document Viewer */}
             <div className="space-y-4">
@@ -484,13 +504,15 @@ const page = (props: Props) => {
                     <span className="font-medium text-gray-600">Status:</span>
                     <div className="flex items-center gap-2 mt-1">
                       {selectedProof && getStatusIcon(selectedProof.status)}
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        selectedProof?.status === "Approved" 
-                          ? "bg-green-100 text-green-800" 
-                          : selectedProof?.status === "Rejected"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-yellow-100 text-yellow-800"
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          selectedProof?.status === "Approved"
+                            ? "bg-green-100 text-green-800"
+                            : selectedProof?.status === "Rejected"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
                         {selectedProof?.status}
                       </span>
                     </div>
@@ -506,7 +528,9 @@ const page = (props: Props) => {
                   <div>
                     <span className="font-medium text-gray-600">Amount:</span>
                     <p className="font-semibold text-green-600">
-                      ${selectedProof?.paymentAmount.toFixed(2)} {selectedProof?.currency}
+                      {selectedProof
+                        ? `$${selectedProof.paymentAmount.toFixed(2)} ${selectedProof.currency}`
+                        : ""}
                     </p>
                   </div>
                   <div>
@@ -533,8 +557,15 @@ const page = (props: Props) => {
                 {/* History Log */}
                 <div className="mt-6">
                   <button
-                    onClick={() => setExpandedHistory(expandedHistory === selectedProof?.id ? null : selectedProof?.id || null)}
+                    onClick={() =>
+                      setExpandedHistory(
+                        expandedHistory === selectedProof?.id
+                          ? null
+                          : selectedProof?.id ?? null
+                      )
+                    }
                     className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+                    type="button"
                   >
                     History Log
                     {expandedHistory === selectedProof?.id ? (
@@ -543,7 +574,7 @@ const page = (props: Props) => {
                       <ChevronDown className="w-4 h-4" />
                     )}
                   </button>
-                  
+
                   {expandedHistory === selectedProof?.id && (
                     <div className="mt-2 space-y-2">
                       {selectedProof?.history.map((entry, index) => (
@@ -564,10 +595,7 @@ const page = (props: Props) => {
           </div>
 
           <DialogFooter className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={() => setIsViewerOpen(false)}
-            >
+            <Button variant="outline" onClick={() => setIsViewerOpen(false)}>
               Close
             </Button>
             <Button
@@ -644,4 +672,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

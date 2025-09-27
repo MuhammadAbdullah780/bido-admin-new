@@ -49,4 +49,20 @@ export const APP_LINKS = [
       return path === "/dashboard/financial-logs";
     },
   },
+  {
+    title: "Payment Proofs",
+    icon: ActivityIcon,
+    to: "/dashboard/payment-proofs",
+    isMatched: (path: string): boolean => {
+      return path === "/dashboard/payment-proofs";
+    },
+  },
+  {
+    title: "Auction Frauds",
+    icon: ActivityIcon,
+    to: "/dashboard/auction-frauds",
+    isMatched: (path: string): boolean => {
+      return path === "/dashboard/auction-frauds";
+    },
+  },
 ];
