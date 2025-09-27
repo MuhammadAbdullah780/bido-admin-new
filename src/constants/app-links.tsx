@@ -33,4 +33,20 @@ export const APP_LINKS = [
       return path === "/dashboard/registration-requests";
     },
   },
+  {
+    title: "Registration Logs",
+    icon: ActivityIcon,
+    to: "/dashboard/registration-logs",
+    isMatched: (path: string): boolean => {
+      return path === "/dashboard/registration-logs";
+    },
+  },
+  {
+    title: "Financial Logs",
+    icon: ActivityIcon,
+    to: "/dashboard/financial-logs",
+    isMatched: (path: string): boolean => {
+      return path === "/dashboard/financial-logs";
+    },
+  },
 ];
