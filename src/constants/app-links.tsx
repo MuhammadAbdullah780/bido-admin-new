@@ -1,4 +1,4 @@
-import { ActivityIcon, LayoutDashboard, Users } from "lucide-react";
+import { ActivityIcon, LayoutDashboard, UserPlus, Users } from "lucide-react";
 
 export const APP_LINKS = [
   {
@@ -23,6 +23,14 @@ export const APP_LINKS = [
     to: "/dashboard/action-logs",
     isMatched: (path: string): boolean => {
       return path === "/dashboard/action-logs";
+    },
+  },
+  {
+    title: "Registrations",
+    icon: UserPlus,
+    to: "/dashboard/registration-requests",
+    isMatched: (path: string): boolean => {
+      return path === "/dashboard/registration-requests";
     },
   },
 ];

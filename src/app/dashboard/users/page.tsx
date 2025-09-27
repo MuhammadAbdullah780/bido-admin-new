@@ -79,34 +79,34 @@ const userColumns: JsonTableColumns<(typeof users)[0]> = [
     )
   },
   { title: "Registered", dataIndex: "registered" },
-  {
-    title: "",
-    dataIndex: "id",
-    render: (k) => (
-      <Link
-        href={`/dashboard/users/${k?.id}`}
-        className="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 cursor-pointer"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path
-            d="M9 6l6 6-6 6"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </Link>
-    ),
-  },
+  // {
+  //   title: "",
+  //   dataIndex: "id",
+  //   render: (k) => (
+  //     <Link
+  //       href={`/dashboard/users/${k?.id}`}
+  //       className="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 cursor-pointer"
+  //     >
+  //       <svg
+  //         xmlns="http://www.w3.org/2000/svg"
+  //         width="20"
+  //         height="20"
+  //         fill="none"
+  //         viewBox="0 0 24 24"
+  //         stroke="currentColor"
+  //         strokeWidth="2"
+  //       >
+  //         <path
+  //           d="M9 6l6 6-6 6"
+  //           stroke="currentColor"
+  //           strokeWidth="2"
+  //           strokeLinecap="round"
+  //           strokeLinejoin="round"
+  //         />
+  //       </svg>
+  //     </Link>
+  //   ),
+  // },
 ];
 
 const page = (props: Props) => {
