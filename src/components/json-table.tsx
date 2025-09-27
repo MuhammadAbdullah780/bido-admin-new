@@ -180,12 +180,17 @@ const JsonTable = ({
                   >
                     {column?.render
                       ? column?.render(item)
-                      : stringToObjectNotation(
-                          String(column?.dataIndex),
-                          item
-                        ) ||
-                        column?.fallback ||
-                        "-"}
+                      : (() => {
+                          const value = stringToObjectNotation(
+                            String(column?.dataIndex),
+                            item
+                          );
+                          // If value is an object, return a string representation
+                          if (typeof value === 'object' && value !== null) {
+                            return JSON.stringify(value);
+                          }
+                          return value || column?.fallback || "-";
+                        })()}
                   </td>
                 );
               })}

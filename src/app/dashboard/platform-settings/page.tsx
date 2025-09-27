@@ -17,7 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { JsonTable, StatusBadge, ActionButtons } from "@/components/ui/json-table";
+import JsonTable, { JsonTableColumns } from "@/components/json-table";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useState } from "react";
 import { 
@@ -483,17 +483,15 @@ const page = (props: Props) => {
                 data={settings.categories}
                 columns={[
                   {
-                    key: "name",
-                    label: "Category",
-                    className: "col-span-3 font-medium"
+                    title: "Category",
+                    dataIndex: "name"
                   },
                   {
-                    key: "subcategories",
-                    label: "Subcategories",
-                    className: "col-span-4",
-                    render: (subcategories: string[]) => (
+                    title: "Subcategories",
+                    dataIndex: "subcategories",
+                    render: (item) => (
                       <div className="flex flex-wrap gap-1">
-                        {subcategories.map((sub, index) => (
+                        {item.subcategories.map((sub: string, index: number) => (
                           <Badge key={index} variant="secondary" className="text-xs">
                             {sub}
                           </Badge>
@@ -502,24 +500,45 @@ const page = (props: Props) => {
                     )
                   },
                   {
-                    key: "isActive",
-                    label: "Status",
-                    className: "col-span-2",
-                    render: (isActive: boolean) => (
-                      <StatusBadge status={isActive} />
+                    title: "Status",
+                    dataIndex: "isActive",
+                    render: (item) => (
+                      <Badge variant={item.isActive ? "default" : "secondary"}>
+                        {item.isActive ? "Active" : "Inactive"}
+                      </Badge>
+                    )
+                  },
+                  {
+                    title: "Actions",
+                    dataIndex: "id",
+                    render: (item) => (
+                      <div className="flex space-x-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditCategory(item)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleToggleCategoryStatus(item.id)}
+                        >
+                          {item.isActive ? "Deactivate" : "Activate"}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteCategory(item.id)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     )
                   }
                 ]}
-                actions={(category) => (
-                  <ActionButtons
-                    onEdit={() => handleEditCategory(category)}
-                    onToggle={() => handleToggleCategoryStatus(category.id)}
-                    onDelete={() => handleDeleteCategory(category.id)}
-                    toggleText={category.isActive ? "Deactivate" : "Activate"}
-                    editIcon={<Edit className="w-4 h-4" />}
-                    deleteIcon={<Trash2 className="w-4 h-4" />}
-                  />
-                )}
               />
             </CardContent>
           </Card>
@@ -615,36 +634,51 @@ const page = (props: Props) => {
                 data={settings.tutorials[tutorialLanguage]}
                 columns={[
                   {
-                    key: "title",
-                    label: "Title",
-                    className: "col-span-3 font-medium"
+                    title: "Title",
+                    dataIndex: "title"
                   },
                   {
-                    key: "content",
-                    label: "Content Preview",
-                    className: "col-span-5 max-w-xs truncate"
+                    title: "Content Preview",
+                    dataIndex: "content",
+                    render: (item) => (
+                      <div className="max-w-xs truncate">
+                        {item.content}
+                      </div>
+                    )
                   },
                   {
-                    key: "isPublished",
-                    label: "Status",
-                    className: "col-span-2",
-                    render: (isPublished: boolean) => (
-                      <StatusBadge 
-                        status={isPublished} 
-                        activeText="Published" 
-                        inactiveText="Draft" 
-                      />
+                    title: "Status",
+                    dataIndex: "isPublished",
+                    render: (item) => (
+                      <Badge variant={item.isPublished ? "default" : "secondary"}>
+                        {item.isPublished ? "Published" : "Draft"}
+                      </Badge>
+                    )
+                  },
+                  {
+                    title: "Actions",
+                    dataIndex: "id",
+                    render: (item) => (
+                      <div className="flex space-x-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditTutorial(item)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteTutorial(item.id)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     )
                   }
                 ]}
-                actions={(tutorial) => (
-                  <ActionButtons
-                    onEdit={() => handleEditTutorial(tutorial)}
-                    onDelete={() => handleDeleteTutorial(tutorial.id)}
-                    editIcon={<Edit className="w-4 h-4" />}
-                    deleteIcon={<Trash2 className="w-4 h-4" />}
-                  />
-                )}
               />
             </CardContent>
           </Card>
@@ -847,41 +881,60 @@ const page = (props: Props) => {
                 data={settings.staticPages}
                 columns={[
                   {
-                    key: "title",
-                    label: "Title",
-                    className: "col-span-3 font-medium"
+                    title: "Title",
+                    dataIndex: "title"
                   },
                   {
-                    key: "slug",
-                    label: "Slug",
-                    className: "col-span-2 font-mono text-sm"
+                    title: "Slug",
+                    dataIndex: "slug",
+                    render: (item) => (
+                      <span className="font-mono text-sm">
+                        {item.slug}
+                      </span>
+                    )
                   },
                   {
-                    key: "content",
-                    label: "Content Preview",
-                    className: "col-span-4 max-w-xs truncate"
+                    title: "Content Preview",
+                    dataIndex: "content",
+                    render: (item) => (
+                      <div className="max-w-xs truncate">
+                        {item.content}
+                      </div>
+                    )
                   },
                   {
-                    key: "isPublished",
-                    label: "Status",
-                    className: "col-span-1",
-                    render: (isPublished: boolean) => (
-                      <StatusBadge 
-                        status={isPublished} 
-                        activeText="Published" 
-                        inactiveText="Draft" 
-                      />
+                    title: "Status",
+                    dataIndex: "isPublished",
+                    render: (item) => (
+                      <Badge variant={item.isPublished ? "default" : "secondary"}>
+                        {item.isPublished ? "Published" : "Draft"}
+                      </Badge>
+                    )
+                  },
+                  {
+                    title: "Actions",
+                    dataIndex: "id",
+                    render: (item) => (
+                      <div className="flex space-x-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditStaticPage(item)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteStaticPage(item.id)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     )
                   }
                 ]}
-                actions={(page) => (
-                  <ActionButtons
-                    onEdit={() => handleEditStaticPage(page)}
-                    onDelete={() => handleDeleteStaticPage(page.id)}
-                    editIcon={<Edit className="w-4 h-4" />}
-                    deleteIcon={<Trash2 className="w-4 h-4" />}
-                  />
-                )}
               />
             </CardContent>
           </Card>

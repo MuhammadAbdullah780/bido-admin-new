@@ -87,9 +87,9 @@ const SideLink = ({ config }: Props) => {
                 }}
                 className={cn(
                   "flex items-center rounded-lg py-2 pl-10 pr-3 text-sm font-medium transition-colors",
-                  "hover:bg-secondary_light hover:text-white",
+                  "hover:bg-[#1E2939] hover:text-white",
                   child?.isMatched(pathname)
-                    ? "bg-secondary_light text-white"
+                    ? "bg-[#1E2939] text-white"
                     : ""
                 )}
               >

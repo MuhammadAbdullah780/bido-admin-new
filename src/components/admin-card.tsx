@@ -3,7 +3,7 @@ type Props = {
   title?: string;
 };
 
-const CustomCard = ({ children, title }: Props) => {
+const AdminCard = ({ children, title }: Props) => {
   return (
     <div className="bg-white rounded-lg shadow p-5">
       {title && <h2 className="text-xl font-semibold mb-4">{title}</h2>}
@@ -12,4 +12,4 @@ const CustomCard = ({ children, title }: Props) => {
   );
 };
 
-export default CustomCard;
+export default AdminCard;
