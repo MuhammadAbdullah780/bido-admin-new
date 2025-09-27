@@ -1,6 +1,8 @@
+'use client';
 import JsonTable, { JsonTableColumns } from "@/components/json-table";
 import { MetricCard } from "@/components/stats-card";
 import Link from "next/link";
+import { useState } from "react";
 
 type Props = {};
 
@@ -9,6 +11,8 @@ const userStats = [
   { title: "Sellers", value: "100" },
   { title: "Buyers", value: "300" },
   { title: "Partially Registered", value: "100" },
+  { title: "Blocked Users", value: "100" },
+  { title: "Active Users", value: "300" },
 ];
 
 // Example user data
@@ -20,6 +24,8 @@ const users = [
     role: "Seller",
     status: "Active",
     registered: "2024-06-01",
+    commissionRate: 5.5,
+    isBlocked: false,
   },
   {
     id: 2,
@@ -28,6 +34,8 @@ const users = [
     role: "Buyer",
     status: "Active",
     registered: "2024-05-20",
+    commissionRate: 0,
+    isBlocked: false,
   },
   {
     id: 3,
@@ -36,6 +44,8 @@ const users = [
     role: "Seller",
     status: "Partially Registered",
     registered: "2024-06-10",
+    commissionRate: 3.2,
+    isBlocked: true,
   },
 ];
 
@@ -45,6 +55,29 @@ const userColumns: JsonTableColumns<(typeof users)[0]> = [
   { title: "Email", dataIndex: "email" },
   { title: "Role", dataIndex: "role" },
   { title: "Status", dataIndex: "status" },
+  { 
+    title: "Commission Rate", 
+    dataIndex: "commissionRate",
+    width:200,
+    render: (user) => (
+      <span className="font-medium">
+        {user.commissionRate}%
+      </span>
+    )
+  },
+  { 
+    title: "Blocked", 
+    dataIndex: "isBlocked",
+    render: (user) => (
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+        user.isBlocked 
+          ? "bg-red-100 text-red-800" 
+          : "bg-green-100 text-green-800"
+      }`}>
+        {user.isBlocked ? "Blocked" : "Active"}
+      </span>
+    )
+  },
   { title: "Registered", dataIndex: "registered" },
   {
     title: "",
@@ -77,6 +110,71 @@ const userColumns: JsonTableColumns<(typeof users)[0]> = [
 ];
 
 const page = (props: Props) => {
+  const [userData, setUserData] = useState(users);
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+
+  const handleBlockUsers = (userIds: string[]) => {
+    setUserData(prev => 
+      prev.map(user => 
+        userIds.includes(String(user.id)) 
+          ? { ...user, isBlocked: true }
+          : user
+      )
+    );
+    // Reset selection after action
+    setSelectedUsers([]);
+  };
+
+  const handleUnblockUsers = (userIds: string[]) => {
+    setUserData(prev => 
+      prev.map(user => 
+        userIds.includes(String(user.id)) 
+          ? { ...user, isBlocked: false }
+          : user
+      )
+    );
+    // Reset selection after action
+    setSelectedUsers([]);
+  };
+
+  const handleSetCommissionRate = (userIds: string[]) => {
+    const newRate = prompt("Enter commission rate (0-100):");
+    if (newRate !== null) {
+      const rate = parseFloat(newRate);
+      if (!isNaN(rate) && rate >= 0 && rate <= 100) {
+        setUserData(prev => 
+          prev.map(user => 
+            userIds.includes(String(user.id)) 
+              ? { ...user, commissionRate: rate }
+              : user
+          )
+        );
+      } else {
+        alert("Please enter a valid commission rate between 0 and 100");
+      }
+    }
+    // Always reset selection after action (whether successful, cancelled, or invalid)
+    setSelectedUsers([]);
+  };
+
+  const bulkActions = [
+    {
+      label: "Block Users",
+      action: handleBlockUsers,
+      variant: "destructive" as const
+    },
+    {
+      label: "Unblock Users", 
+      action: handleUnblockUsers,
+      variant: "outline" as const
+    },
+    {
+      label: "Set Commission Rate",
+      action: handleSetCommissionRate,
+      variant: "default" as const
+    }
+  ];
+
   return (
     <div className="space-y-10">
       <h1 className="text-3xl font-medium">Users</h1>
@@ -91,7 +189,14 @@ const page = (props: Props) => {
         ))}
       </div>
 
-      <JsonTable columns={userColumns} data={users} />
+      <JsonTable 
+        columns={userColumns} 
+        data={userData} 
+        enableSelection={true}
+        bulkActions={bulkActions}
+        selectedIds={selectedUsers}
+        onSelectionChange={setSelectedUsers}
+      />
     </div>
   );
 };
