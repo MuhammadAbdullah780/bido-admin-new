@@ -13,7 +13,14 @@ import {
   TrendingUp,
   UserCheck,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  Gavel,
+  CheckCircle,
+  XCircle,
+  Star,
+  Bell,
+  FileSearch,
+  Filter
 } from "lucide-react";
 
 export const APP_LINKS = [
@@ -24,6 +31,72 @@ export const APP_LINKS = [
     isMatched: (path: string): boolean => {
       return path === "/dashboard";
     },
+  },
+  {
+    title: "Auction Management",
+    icon: Gavel,
+    to: "/dashboard/auctions",
+    isMatched: (path: string): boolean => {
+      return path.startsWith("/dashboard/auctions");
+    },
+    innerRoutes: [
+      {
+        title: "Auction Dashboard",
+        to: "/dashboard/auctions",
+        isMatched: (path: string): boolean => {
+          return path === "/dashboard/auctions";
+        },
+      },
+      {
+        title: "Auction Requests",
+        to: "/dashboard/auctions/requests",
+        isMatched: (path: string): boolean => {
+          return path === "/dashboard/auctions/requests";
+        },
+      },
+      {
+        title: "Active Auctions",
+        to: "/dashboard/auctions/active",
+        isMatched: (path: string): boolean => {
+          return path === "/dashboard/auctions/active";
+        },
+      },
+      {
+        title: "Auction Logs",
+        to: "/dashboard/auctions/logs",
+        isMatched: (path: string): boolean => {
+          return path === "/dashboard/auctions/logs";
+        },
+      },
+      {
+        title: "Auction Reports",
+        to: "/dashboard/auctions/reports",
+        isMatched: (path: string): boolean => {
+          return path === "/dashboard/auctions/reports";
+        },
+      },
+      {
+        title: "Auction Notifications",
+        to: "/dashboard/auctions/notifications",
+        isMatched: (path: string): boolean => {
+          return path === "/dashboard/auctions/notifications";
+        },
+      },
+      {
+        title: "Auction Inquiries",
+        to: "/dashboard/auctions/inquiries",
+        isMatched: (path: string): boolean => {
+          return path === "/dashboard/auctions/inquiries";
+        },
+      },
+      {
+        title: "Auction Monitoring",
+        to: "/dashboard/auctions/monitoring",
+        isMatched: (path: string): boolean => {
+          return path === "/dashboard/auctions/monitoring";
+        },
+      },
+    ],
   },
   {
     title: "Users",
