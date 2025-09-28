@@ -367,7 +367,7 @@ const page = (props: Props) => {
               refundAmount: refundAmountValue,
               refundReason: refundReason,
               status: "Completed"
-            }
+            } as typeof log
           : log
       )
     );

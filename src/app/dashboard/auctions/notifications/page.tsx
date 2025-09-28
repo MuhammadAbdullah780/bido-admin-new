@@ -338,11 +338,11 @@ const page = (props: Props) => {
     { title: "Recipient", dataIndex: "recipient", width: 150 },
     { 
       title: "Channels", 
-      dataIndex: "channels",
+      dataIndex: "channels" as any,
       width: 100,
       render: (item) => (
         <div className="flex gap-1">
-          {item.channels.map((channel, index) => (
+          {(item as any).channels.map((channel: string, index: number) => (
             <div key={index} className="flex items-center" title={channel}>
               {getChannelIcon(channel)}
             </div>
@@ -424,8 +424,6 @@ const page = (props: Props) => {
             key={stat.title}
             title={stat.title}
             value={stat.value}
-            change={stat.change}
-            trend={stat.trend as "up" | "down"}
           />
         ))}
       </div>
@@ -567,7 +565,7 @@ const page = (props: Props) => {
                     <div>
                       <Label className="text-sm font-medium">Channels</Label>
                       <div className="flex gap-1 mt-1">
-                        {selectedNotification.channels.map((channel, index) => (
+                        {selectedNotification.channels.map((channel: string, index: number) => (
                           <div key={index} className="flex items-center gap-1" title={channel}>
                             {getChannelIcon(channel)}
                             <span className="text-xs">{channel}</span>

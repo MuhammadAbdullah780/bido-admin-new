@@ -338,11 +338,11 @@ const page = (props: Props) => {
     },
     { 
       title: "Flags", 
-      dataIndex: "flags",
+      dataIndex: "flags" as any,
       width: 120,
       render: (item) => (
         <div className="flex gap-1">
-          {item.flags.map((flag, index) => (
+          {(item as any).flags.map((flag: string, index: number) => (
             <div key={index} className="flex items-center" title={flag.replace('_', ' ')}>
               {getFlagIcon(flag)}
             </div>
@@ -395,8 +395,6 @@ const page = (props: Props) => {
             key={stat.title}
             title={stat.title}
             value={stat.value}
-            change={stat.change}
-            trend={stat.trend as "up" | "down"}
           />
         ))}
       </div>
@@ -628,7 +626,7 @@ const page = (props: Props) => {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {selectedAuction.flags.map((flag, index) => (
+                      {selectedAuction.flags.map((flag: string, index: number) => (
                         <Badge key={index} variant="outline" className="flex items-center gap-1">
                           {getFlagIcon(flag)}
                           {flag.replace('_', ' ')}
@@ -650,7 +648,7 @@ const page = (props: Props) => {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      {selectedAuction.issues.map((issue, index) => (
+                      {selectedAuction.issues.map((issue: string, index: number) => (
                         <div key={index} className="flex items-center gap-2 p-2 bg-red-50 rounded">
                           <AlertTriangle className="h-4 w-4 text-red-500" />
                           <span className="text-sm text-red-700">{issue}</span>

@@ -179,13 +179,14 @@ export default function UserActivityPage() {
     return "bg-red-100 text-red-800";
   };
 
+  // Define columns inside component to access helper functions
   const topUsersColumns: JsonTableColumns<(typeof userActivityData.topUsers)[0]> = [
     { title: "User", dataIndex: "name" },
     { title: "Email", dataIndex: "email" },
     { 
       title: "Activity Score", 
       dataIndex: "activityScore",
-      render: (item) => (
+      render: (item: (typeof userActivityData.topUsers)[0]) => (
         <div className="flex items-center space-x-2">
           <span className={`font-semibold ${getActivityScoreColor(item.activityScore)}`}>{item.activityScore}</span>
           <Badge className={getActivityScoreBadge(item.activityScore)}>
@@ -197,21 +198,21 @@ export default function UserActivityPage() {
     { 
       title: "Logins", 
       dataIndex: "logins",
-      render: (item) => (
+      render: (item: (typeof userActivityData.topUsers)[0]) => (
         <Badge variant="outline">{item.logins}</Badge>
       )
     },
     { 
       title: "Auctions", 
       dataIndex: "auctions",
-      render: (item) => (
+      render: (item: (typeof userActivityData.topUsers)[0]) => (
         <Badge variant="secondary">{item.auctions}</Badge>
       )
     },
     { 
       title: "Bids", 
       dataIndex: "bids",
-      render: (item) => (
+      render: (item: (typeof userActivityData.topUsers)[0]) => (
         <Badge variant="outline">{item.bids}</Badge>
       )
     },
@@ -225,7 +226,7 @@ export default function UserActivityPage() {
     { 
       title: "Location", 
       dataIndex: "location",
-      render: (item) => (
+      render: (item: (typeof userActivityData.activityTimeline)[0]) => (
         <div className="flex items-center space-x-1">
           <MapPin className="h-3 w-3 text-gray-400" />
           <span className="text-sm">{item.location}</span>
@@ -235,7 +236,7 @@ export default function UserActivityPage() {
     { 
       title: "Device", 
       dataIndex: "device",
-      render: (item) => (
+      render: (item: (typeof userActivityData.activityTimeline)[0]) => (
         <Badge variant="outline">{item.device}</Badge>
       )
     },
@@ -243,7 +244,7 @@ export default function UserActivityPage() {
     { 
       title: "Session", 
       dataIndex: "sessionDuration",
-      render: (item) => (
+      render: (item: (typeof userActivityData.activityTimeline)[0]) => (
         <span className="text-sm text-gray-600">{item.sessionDuration} min</span>
       )
     }

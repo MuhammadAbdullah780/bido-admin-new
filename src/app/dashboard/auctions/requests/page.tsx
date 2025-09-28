@@ -304,13 +304,13 @@ const page = (props: Props) => {
         </Badge>
       )
     },
-    { 
-      title: "Flags", 
-      dataIndex: "flags",
+    {
+      title: "Flags",
+      dataIndex: "flags" as any,
       width: 120,
       render: (item) => (
         <div className="flex gap-1">
-          {item.flags.map((flag, index) => (
+          {(item as any).flags.map((flag: string, index: number) => (
             <div key={index} className="flex items-center" title={flag.replace('_', ' ')}>
               {getFlagIcon(flag)}
             </div>
@@ -365,8 +365,6 @@ const page = (props: Props) => {
             key={stat.title}
             title={stat.title}
             value={stat.value}
-            change={stat.change}
-            trend={stat.trend as "up" | "down"}
           />
         ))}
       </div>
@@ -548,7 +546,7 @@ const page = (props: Props) => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    {selectedRequest.attachments.map((attachment, index) => (
+                    {selectedRequest.attachments.map((attachment: any, index: number) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-center gap-2">
                           <FileText className="h-4 w-4 text-gray-500" />
@@ -573,7 +571,7 @@ const page = (props: Props) => {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {selectedRequest.flags.map((flag, index) => (
+                      {selectedRequest.flags.map((flag: string, index: number) => (
                         <Badge key={index} variant="outline" className="flex items-center gap-1">
                           {getFlagIcon(flag)}
                           {flag.replace('_', ' ')}

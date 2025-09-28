@@ -368,8 +368,6 @@ const page = (props: Props) => {
             key={stat.title}
             title={stat.title}
             value={stat.value}
-            change={stat.change}
-            trend={stat.trend as "up" | "down"}
           />
         ))}
       </div>
@@ -563,7 +561,7 @@ const page = (props: Props) => {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      {selectedInquiry.attachments.map((attachment, index) => (
+                      {selectedInquiry.attachments.map((attachment: any, index: number) => (
                         <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                           <div className="flex items-center gap-2">
                             <Upload className="h-4 w-4 text-gray-500" />

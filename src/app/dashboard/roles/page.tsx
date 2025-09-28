@@ -228,7 +228,7 @@ function RoleForm({ role, onClose }: { role?: any; onClose: () => void }) {
     } else {
       setFormData({
         ...formData,
-        permissions: formData.permissions.filter(p => p !== permissionId)
+        permissions: formData.permissions.filter((p: string) => p !== permissionId)
       });
     }
   };

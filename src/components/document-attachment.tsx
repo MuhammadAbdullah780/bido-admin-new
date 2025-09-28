@@ -76,7 +76,7 @@ export default function DocumentAttachment({
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const selectedDocumentType = documentTypes.find(dt => dt.type === documentData.type);
+  const selectedDocumentType = documentTypes.find(dt => dt.value === documentData.type);
   const IconComponent = selectedDocumentType?.icon || FileText;
 
   const handleFileChange = (file: File | null) => {

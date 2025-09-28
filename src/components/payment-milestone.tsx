@@ -250,7 +250,7 @@ export default function PaymentMilestone({
   };
 
   const isOverdue = (dueDate: string) => {
-    return new Date(dueDate) < new Date() && !milestones.find(m => m.dueDate === dueDate)?.status === 'paid';
+    return new Date(dueDate) < new Date() && milestones.find(m => m.dueDate === dueDate)?.status !== 'paid';
   };
 
   return (
@@ -304,7 +304,7 @@ export default function PaymentMilestone({
       {/* Milestones List */}
       <div className="space-y-4">
         {milestones.map((milestone) => {
-          const milestoneType = milestoneTypes.find(t => t.type === milestone.type);
+          const milestoneType = milestoneTypes.find(t => t.value === milestone.type);
           const IconComponent = milestoneType?.icon || DollarSign;
           const isOverdueMilestone = isOverdue(milestone.dueDate);
 

@@ -233,114 +233,6 @@ const auctionFrauds = [
   }
 ];
 
-// Define columns for the JsonTable
-const fraudColumns: JsonTableColumns<(typeof auctionFrauds)[0]> = [
-  { title: "Auction ID", dataIndex: "auctionId", width: 120 },
-  { title: "Title", dataIndex: "title", width: 200 },
-  { 
-    title: "Risk Level", 
-    dataIndex: "riskLevel",
-    width: 120,
-    render: (fraud) => (
-      <Badge 
-        variant={
-          fraud.riskLevel === "High" ? "destructive" : 
-          fraud.riskLevel === "Medium" ? "secondary" : 
-          "outline"
-        }
-        className="flex items-center gap-1"
-      >
-        <AlertTriangle className="w-3 h-3" />
-        {fraud.riskLevel}
-      </Badge>
-    )
-  },
-  { 
-    title: "Status", 
-    dataIndex: "status",
-    width: 120,
-    render: (fraud) => (
-      <Badge 
-        variant={
-          fraud.status === "Flagged" ? "destructive" : 
-          fraud.status === "Under Review" ? "secondary" : 
-          "default"
-        }
-      >
-        {fraud.status}
-      </Badge>
-    )
-  },
-  { 
-    title: "Final Bid", 
-    dataIndex: "finalBid",
-    width: 120,
-    render: (fraud) => (
-      <span className="font-medium text-green-600">
-        ${fraud.finalBid.toLocaleString()}
-      </span>
-    )
-  },
-  { 
-    title: "Payments", 
-    dataIndex: "totalPayments",
-    width: 120,
-    render: (fraud) => (
-      <span className="font-medium text-blue-600">
-        ${fraud.totalPayments.toLocaleString()}
-      </span>
-    )
-  },
-  { 
-    title: "Gap", 
-    dataIndex: "paymentGap",
-    width: 100,
-    render: (fraud) => (
-      <span className="font-medium text-red-600">
-        ${fraud.paymentGap.toLocaleString()}
-      </span>
-    )
-  },
-  { 
-    title: "Gap %", 
-    dataIndex: "gapPercentage",
-    width: 80,
-    render: (fraud) => (
-      <span className="font-medium text-orange-600">
-        {fraud.gapPercentage}%
-      </span>
-    )
-  },
-  { title: "Auctioneer", dataIndex: "auctioneer", width: 150 },
-  { title: "Bidder", dataIndex: "bidder", width: 150 },
-  { title: "Flagged Date", dataIndex: "flaggedAt", width: 150 },
-  { 
-    title: "Actions", 
-    dataIndex: "id",
-    width: 200,
-    render: (fraud) => (
-      <div className="flex gap-2">
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => handleViewDetails(fraud)}
-        >
-          <Eye className="w-4 h-4 mr-1" />
-          Review
-        </Button>
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => handleSendAlert(fraud)}
-        >
-          <AlertCircle className="w-4 h-4 mr-1" />
-          Alert
-        </Button>
-      </div>
-    )
-  },
-];
-
 const page = (props: Props) => {
   const [fraudData, setFraudData] = useState(auctionFrauds);
   const [selectedFraud, setSelectedFraud] = useState<(typeof auctionFrauds)[0] | null>(null);
@@ -407,7 +299,7 @@ const page = (props: Props) => {
                   timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
                 }
               ]
-            }
+            } as typeof fraud
           : fraud
       )
     );
@@ -439,7 +331,7 @@ const page = (props: Props) => {
                   timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
                 }
               ]
-            }
+            } as typeof fraud
           : fraud
       )
     );
@@ -464,6 +356,114 @@ const page = (props: Props) => {
       default: return <FileText className="w-4 h-4 text-blue-500" />;
     }
   };
+
+  // Define columns for the JsonTable
+  const fraudColumns: JsonTableColumns<(typeof auctionFrauds)[0]> = [
+    { title: "Auction ID", dataIndex: "auctionId", width: 120 },
+    { title: "Title", dataIndex: "title", width: 200 },
+    { 
+      title: "Risk Level", 
+      dataIndex: "riskLevel",
+      width: 120,
+      render: (fraud) => (
+        <Badge 
+          variant={
+            fraud.riskLevel === "High" ? "destructive" : 
+            fraud.riskLevel === "Medium" ? "secondary" : 
+            "outline"
+          }
+          className="flex items-center gap-1"
+        >
+          <AlertTriangle className="w-3 h-3" />
+          {fraud.riskLevel}
+        </Badge>
+      )
+    },
+    { 
+      title: "Status", 
+      dataIndex: "status",
+      width: 120,
+      render: (fraud) => (
+        <Badge 
+          variant={
+            fraud.status === "Flagged" ? "destructive" : 
+            fraud.status === "Under Review" ? "secondary" : 
+            "default"
+          }
+        >
+          {fraud.status}
+        </Badge>
+      )
+    },
+    { 
+      title: "Final Bid", 
+      dataIndex: "finalBid",
+      width: 120,
+      render: (fraud) => (
+        <span className="font-medium text-green-600">
+          ${fraud.finalBid.toLocaleString()}
+        </span>
+      )
+    },
+    { 
+      title: "Payments", 
+      dataIndex: "totalPayments",
+      width: 120,
+      render: (fraud) => (
+        <span className="font-medium text-blue-600">
+          ${fraud.totalPayments.toLocaleString()}
+        </span>
+      )
+    },
+    { 
+      title: "Gap", 
+      dataIndex: "paymentGap",
+      width: 100,
+      render: (fraud) => (
+        <span className="font-medium text-red-600">
+          ${fraud.paymentGap.toLocaleString()}
+        </span>
+      )
+    },
+    { 
+      title: "Gap %", 
+      dataIndex: "gapPercentage",
+      width: 80,
+      render: (fraud) => (
+        <span className="font-medium text-orange-600">
+          {fraud.gapPercentage}%
+        </span>
+      )
+    },
+    { title: "Auctioneer", dataIndex: "auctioneer", width: 150 },
+    { title: "Bidder", dataIndex: "bidder", width: 150 },
+    { title: "Flagged Date", dataIndex: "flaggedAt", width: 150 },
+    { 
+      title: "Actions", 
+      dataIndex: "id",
+      width: 200,
+      render: (fraud) => (
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => handleViewDetails(fraud)}
+          >
+            <Eye className="w-4 h-4 mr-1" />
+            Review
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => handleSendAlert(fraud)}
+          >
+            <AlertCircle className="w-4 h-4 mr-1" />
+            Alert
+          </Button>
+        </div>
+      )
+    },
+  ];
 
   return (
     <div className="space-y-10">

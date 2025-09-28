@@ -354,8 +354,6 @@ const page = (props: Props) => {
             key={stat.title}
             title={stat.title}
             value={stat.value}
-            change={stat.change}
-            trend={stat.trend as "up" | "down"}
           />
         ))}
       </div>

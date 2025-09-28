@@ -424,8 +424,6 @@ const page = (props: Props) => {
             key={stat.title}
             title={stat.title}
             value={stat.value}
-            change={stat.change}
-            trend={stat.trend as "up" | "down"}
           />
         ))}
       </div>
@@ -660,7 +658,7 @@ const page = (props: Props) => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    {selectedCase.actions.map((action, index) => (
+                    {selectedCase.actions.map((action: string, index: number) => (
                       <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
                         <CheckCircle className="h-4 w-4 text-green-500" />
                         <span className="text-sm">{action.replace('_', ' ')}</span>
